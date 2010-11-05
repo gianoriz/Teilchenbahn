@@ -1,7 +1,7 @@
 program TeilchenTrajektorie
 
   !PROGRAMM: RUNGE-KUTTA-4TER-ORDNUNG (MIT DEN RICHTIGEN BEWEGUNGSGLEICHUNGEN)
-
+  !Jonas schau dir bitte meinen Rungekuttasolver an und vergleiche dies mit dem online numerical recepies!!!
   implicit none   
 
   !DEFINITION DER VARIABLEN:
