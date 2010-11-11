@@ -142,9 +142,9 @@ program SaturnRheaTeilchen
            exit 
         end if
 
-        if (y < 100* (L1-Rr)) then
-           exit
-        end if
+       ! if (y < 100* (L1-Rr)) then
+       !    exit
+       ! end if
 
 
 
