@@ -47,7 +47,7 @@ program SaturnRheaTeilchen
        + 2 * omegaz * v_y + omegaz**2 * x
   a_y = -(gamma * Mr * y)/(x**2 + y**2 + z**2)**(1.5) & 
        -(gamma * Ms * (y - d))/(x**2 + (y - d)**2 + z**2)**(1.5) &
-       + 2 * omegaz * v_x - omegaz**2 * (y - d)
+       - 2 * omegaz * v_x + omegaz**2 * (y - d)
   a_z = -(gamma * Mr * z)/(x**2 + y**2 + z**2)**(1.5) &
        -(gamma * Ms * z)/(x**2 + (y - d)**2 + z**2)**(1.5)
 
