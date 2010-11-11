@@ -175,7 +175,7 @@ write(*,*) "####################################################################
 
         !write(*,*) W(2)/R, W(1)/R!W(2)=y-Koordinate in Rhearadien, W(1)=x-Koordinate in Rhearadien
         !write(*,*) W(2)/R, W(5) * (3600/1000) 
-         write(fmt='(/3A, 3X, F3.0, F3.2, 3X, F5.3 //)', UNIT=*) "dt:", schrittzaehler, t/3600, W(2)/1000
+         write(fmt='(/3A, 3X, F3.0, F3.2, 3X, F5.3 //)', *) "dt:", schrittzaehler, t/3600, W(2)/1000
         !write(*,*) t, W(2)-L1!/R
 
 
