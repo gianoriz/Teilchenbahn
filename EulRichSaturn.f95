@@ -135,7 +135,7 @@ program SaturnRheaTeilchen
 
         !write(*,*) r(1)/Radius, r(2)/Radius           !Zuerst x-Achse, dann die y-Achse 
         !write(*,*) r(1)/Radius, v(1)* (3600/1000)     !Geschw. vs. Ort
-        write(*,*) t/3600, (y-L1)/Rr                  !Zeit[h], Abweichung [Rhearadien]
+!        write(*,*) t/3600, (y-L1)/Rr                  !Zeit[h], Abweichung [Rhearadien]
 
 
 
