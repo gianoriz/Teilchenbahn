@@ -1,0 +1,21 @@
+#!/bin/bash
+
+echo "============================================================="
+echo "LADE AUF GITHUB HOCH"
+
+
+git commit -a -m "ich habe wieder etwas weitergearbeitet"
+git push
+
+echo "============================================================="
+echo "KOMPILIEREN UND STARTEN"
+
+# Auskommentieren mit #
+# f95 RungeKuttaNeu.f95 -o RungeKuttaNeuProg && ./RungeKuttaNeuProg
+
+
+f95 stabilitaetstest.f95 -o stabilitaetstestProg && ./stabilitaetstestProg 
+
+echo "============================================================="
+echo "JETZT KOMMT GNUPLOT "
+# gnuplot...

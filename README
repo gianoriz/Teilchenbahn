@@ -1,0 +1,2 @@
+Erstellen von einer Textdatei mit den Daten und gleichzeitige Ausg. auf Konsole
+./stabilitaetstestProg | tee schleifentest.txt
