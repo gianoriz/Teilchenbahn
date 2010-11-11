@@ -59,7 +59,7 @@ do schrittzaehler = 1, 100
 
   dt = schrittzaehler * 1.0 
   write(*,*) dt
-end do !Schrittweite
+
 
 
 write(*,*) "#######################################################################"
@@ -164,11 +164,11 @@ write(*,*) "####################################################################
         t = q * dt          
 
         if (W(2) > L1+R) then
-           stop 
+           return 
         end if
 
         if (W(2) < L1-R) then
-           stop 
+           return
         end if
 
 
@@ -181,9 +181,7 @@ write(*,*) "####################################################################
 
      end do !Ende der grossen do-Zeitschleife 
 
-
-!  end do Schrittweite
-
+end do !Schrittweite
 
 
 end program TeilchenTrajektorie
