@@ -138,7 +138,8 @@ program SaturnRheaTeilchen
         write(*,*) t/3600, (y-L1)/Rr                  !Zeit[h], Abweichung [Rhearadien]
 
 
-        write(*,523) dt, schrittzaehler, t/3600, W(2)/1000 
+
+        write(*,523) dt, schrittzaehler, t/3600, y/1000
 523     format(F10.3, 3X, F10.3, 3X, F10.3, 3X, F10.3)
 
 
