@@ -52,12 +52,9 @@ program SaturnRheaTeilchen
        -(gamma * Ms * z)/(x**2 + (y - d)**2 + z**2)**(1.5)
 
 
-
-
-  dt = 1.0      ![s]       
   n = 100000    !Anzahl der Iterationen
-  !  Schrittweite: 
-  do schrittzaehler = 1, 10
+
+  do schrittzaehler = 1, 1
 
      dt = schrittzaehler * 1.0 
      write(*,*) dt
@@ -112,9 +109,6 @@ program SaturnRheaTeilchen
         x_neu = x + v_xmid * dt    !neue Koordinaten
         y_neu = y + v_ymid * dt
         z_neu = z + v_zmid * dt
-
-
-
 
 
 
