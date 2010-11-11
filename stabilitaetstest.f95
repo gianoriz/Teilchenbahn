@@ -31,7 +31,7 @@ program TeilchenTrajektorie
   double precision S                    !Gemeinsamer Schwerpunkt
   double precision Rs                   !Saturnradius
   double precision R                    !Rhearadius              
-  integer :: q, n, i, j,               !Laufvariablen
+  integer :: q, n, i, j, schrittzaehler !Laufvariablen
 
 
   !#####################################
@@ -54,122 +54,130 @@ program TeilchenTrajektorie
   dt   = 80.0                                       ![s]
   n    = 100000                                     ![Anzahl der Iterationen]
 
+  Schrittweite: do schrittzaehler = 1, 100
+
+
+write(*,*) "#######################################################################"
 
 
 
-  !write(*,*) L1
+     !write(*,*) L1
 
-  !STARTWERTE DES TEILCHENS IM RUHESYSTEM VON RHEA: 
-  W(1) = 0.0  !x  Vertikalachse                                      ![m]    Startpunkt
-  W(2) = L1   !y  Horizontalachse                                    ![m]    Startpunkt             
-  W(3) = 0.0  !z                                                     ![m]    Startpunkt                                  
-  W(4) = 0.0  !omegaz * d * 1.9                                      ![m/s]  Startgeschwindigkeit
-  W(5) = 0.0                                                         ![m/s]  Startgeschwindigkeit
-  W(6) = 0.0                                                         ![m/s]  Startgeschwindigkeit 
-  W(7) = -(gamma * Mr * W(1))/(W(1)**2 + W(2)**2 + W(3)**2)**(1.5) & 
-       -(gamma * Ms * W(1))/(W(1)**2 + (W(2) - d)**2 + W(3)**2)**(1.5) & !Teilchen in Rhea Test
-       + 2 * omegaz * W(5) + omegaz**2 * W(1)
-  W(8) = -(gamma * Mr * W(2))/(W(1)**2 + W(2)**2 + W(3)**2)**(1.5) & 
-       -(gamma * Ms * (W(2) - d))/(W(1)**2 + (W(2) - d)**2 + W(3)**2)**(1.5) &
-       - 2 * omegaz * W(4) + omegaz**2 * (W(2) - d)
-  W(9) = -(gamma * Mr * W(3))/(W(1)**2 + W(2)**2 + W(3)**2)**(1.5) &
-       -(gamma * Ms * W(3))/(W(1)**2 + (W(2) - d)**2 + W(3)**2)**(1.5)
-
-
-
-
-  !Runge-Kutta-Solver:
-
-
-  do q = 0, n !Grosse do-Zeitschleife!Muss ueberhaupt eine do Zeitschleife rein?
-
-
-     do  i = 1,6
-        k1(i) = dt * W(i+3)
-     end do
- W(7) = -(gamma * Mr * W(1))/(W(1)**2 + W(2)**2 + W(3)**2)**(1.5) & 
-       -(gamma * Ms * W(1))/(W(1)**2 + (W(2) - d)**2 + W(3)**2)**(1.5) & !Teilchen in Rhea Test
-       + 2 * omegaz * W(5) + omegaz**2 * W(1)
-  W(8) = -(gamma * Mr * W(2))/(W(1)**2 + W(2)**2 + W(3)**2)**(1.5) & 
-       -(gamma * Ms * (W(2) - d))/(W(1)**2 + (W(2) - d)**2 + W(3)**2)**(1.5) &
-       - 2 * omegaz * W(4) + omegaz**2 * (W(2) - d)
-  W(9) = -(gamma * Mr * W(3))/(W(1)**2 + W(2)**2 + W(3)**2)**(1.5) &
-       -(gamma * Ms * W(3))/(W(1)**2 + (W(2) - d)**2 + W(3)**2)**(1.5)
-
-
-
-
-
-     do  i = 1,6
-        if ((i > 3) .or. (j == 1)) then            !  Beseitigt nichtvorhandene Matrixelem.                   
-           A = 0.0                                 !  K(1,7),K(1,8),...,K(1,10)                              
-        else                                       
-           A = 1.0
-        end if
-        k2(i) = dt * (W(i+3) + 0.5 * k1(i+3) * A)
-     end do
-    W(7) = -(gamma * Mr * W(1))/(W(1)**2 + W(2)**2 + W(3)**2)**(1.5) & 
-       -(gamma * Ms * W(1))/(W(1)**2 + (W(2) - d)**2 + W(3)**2)**(1.5) & !Teilchen in Rhea Test
-       + 2 * omegaz * W(5) + omegaz**2 * W(1)
-  W(8) = -(gamma * Mr * W(2))/(W(1)**2 + W(2)**2 + W(3)**2)**(1.5) & 
-       -(gamma * Ms * (W(2) - d))/(W(1)**2 + (W(2) - d)**2 + W(3)**2)**(1.5) &
-       - 2 * omegaz * W(4) + omegaz**2 * (W(2) - d)
-  W(9) = -(gamma * Mr * W(3))/(W(1)**2 + W(2)**2 + W(3)**2)**(1.5) &
-       -(gamma * Ms * W(3))/(W(1)**2 + (W(2) - d)**2 + W(3)**2)**(1.5)
-
-
-
-
-
-     do i = 1,6
-        if (i > 3) then                            !  Beseitigt nichtvorhandene Matrixelem.                   
-           A = 0.0                                 !  K(1,7),K(1,8),...,K(1,10)                                 
-        else                                       
-           A = 1.0
-        end if
-        k3(i) = dt * (W(i+3) + 0.5 * k2(i+3) * A)
-     end do
+     !STARTWERTE DES TEILCHENS IM RUHESYSTEM VON RHEA: 
+     W(1) = 0.0  !x  Vertikalachse                                      ![m]    Startpunkt
+     W(2) = L1   !y  Horizontalachse                                    ![m]    Startpunkt             
+     W(3) = 0.0  !z                                                     ![m]    Startpunkt                                  
+     W(4) = 0.0  !omegaz * d * 1.9                                      ![m/s]  Startgeschwindigkeit
+     W(5) = 0.0                                                         ![m/s]  Startgeschwindigkeit
+     W(6) = 0.0                                                         ![m/s]  Startgeschwindigkeit 
      W(7) = -(gamma * Mr * W(1))/(W(1)**2 + W(2)**2 + W(3)**2)**(1.5) & 
           -(gamma * Ms * W(1))/(W(1)**2 + (W(2) - d)**2 + W(3)**2)**(1.5) & !Teilchen in Rhea Test
-          - 2 * omegaz * W(5) - omegaz**2 * W(1)
+          + 2 * omegaz * W(5) + omegaz**2 * W(1)
      W(8) = -(gamma * Mr * W(2))/(W(1)**2 + W(2)**2 + W(3)**2)**(1.5) & 
           -(gamma * Ms * (W(2) - d))/(W(1)**2 + (W(2) - d)**2 + W(3)**2)**(1.5) &
-          + 2 * omegaz * W(4) - omegaz**2 * (W(2) - d)
+          - 2 * omegaz * W(4) + omegaz**2 * (W(2) - d)
      W(9) = -(gamma * Mr * W(3))/(W(1)**2 + W(2)**2 + W(3)**2)**(1.5) &
-          -(gamma * Ms * W(3))/(W(1)**2 + (W(2) - d)**2 + W(3)**2)**(1.5) 
+          -(gamma * Ms * W(3))/(W(1)**2 + (W(2) - d)**2 + W(3)**2)**(1.5)
 
 
-     do i = 1,6
-        if (i > 3)  then                           !  Beseitigt nichtvorhandene Matrixelem.                   
-           A = 0.0                                 !  K(1,7),K(1,8),...,K(1,10)                               
-        else                                       
-           A = 1.0
+
+
+     !Runge-Kutta-Solver:
+
+
+     do q = 0, n !Grosse do-Zeitschleife!Muss ueberhaupt eine do Zeitschleife rein?
+
+
+        do  i = 1,6
+           k1(i) = dt * W(i+3)
+        end do
+        W(7) = -(gamma * Mr * W(1))/(W(1)**2 + W(2)**2 + W(3)**2)**(1.5) & 
+             -(gamma * Ms * W(1))/(W(1)**2 + (W(2) - d)**2 + W(3)**2)**(1.5) & !Teilchen in Rhea Test
+             + 2 * omegaz * W(5) + omegaz**2 * W(1)
+        W(8) = -(gamma * Mr * W(2))/(W(1)**2 + W(2)**2 + W(3)**2)**(1.5) & 
+             -(gamma * Ms * (W(2) - d))/(W(1)**2 + (W(2) - d)**2 + W(3)**2)**(1.5) &
+             - 2 * omegaz * W(4) + omegaz**2 * (W(2) - d)
+        W(9) = -(gamma * Mr * W(3))/(W(1)**2 + W(2)**2 + W(3)**2)**(1.5) &
+             -(gamma * Ms * W(3))/(W(1)**2 + (W(2) - d)**2 + W(3)**2)**(1.5)
+
+
+
+
+
+        do  i = 1,6
+           if ((i > 3) .or. (j == 1)) then            !  Beseitigt nichtvorhandene Matrixelem.                   
+              A = 0.0                                 !  K(1,7),K(1,8),...,K(1,10)                              
+           else                                       
+              A = 1.0
+           end if
+           k2(i) = dt * (W(i+3) + 0.5 * k1(i+3) * A)
+        end do
+        W(7) = -(gamma * Mr * W(1))/(W(1)**2 + W(2)**2 + W(3)**2)**(1.5) & 
+             -(gamma * Ms * W(1))/(W(1)**2 + (W(2) - d)**2 + W(3)**2)**(1.5) & !Teilchen in Rhea Test
+             + 2 * omegaz * W(5) + omegaz**2 * W(1)
+        W(8) = -(gamma * Mr * W(2))/(W(1)**2 + W(2)**2 + W(3)**2)**(1.5) & 
+             -(gamma * Ms * (W(2) - d))/(W(1)**2 + (W(2) - d)**2 + W(3)**2)**(1.5) &
+             - 2 * omegaz * W(4) + omegaz**2 * (W(2) - d)
+        W(9) = -(gamma * Mr * W(3))/(W(1)**2 + W(2)**2 + W(3)**2)**(1.5) &
+             -(gamma * Ms * W(3))/(W(1)**2 + (W(2) - d)**2 + W(3)**2)**(1.5)
+
+
+
+
+
+        do i = 1,6
+           if (i > 3) then                            !  Beseitigt nichtvorhandene Matrixelem.                   
+              A = 0.0                                 !  K(1,7),K(1,8),...,K(1,10)                                 
+           else                                       
+              A = 1.0
+           end if
+           k3(i) = dt * (W(i+3) + 0.5 * k2(i+3) * A)
+        end do
+        W(7) = -(gamma * Mr * W(1))/(W(1)**2 + W(2)**2 + W(3)**2)**(1.5) & 
+             -(gamma * Ms * W(1))/(W(1)**2 + (W(2) - d)**2 + W(3)**2)**(1.5) & !Teilchen in Rhea Test
+             - 2 * omegaz * W(5) - omegaz**2 * W(1)
+        W(8) = -(gamma * Mr * W(2))/(W(1)**2 + W(2)**2 + W(3)**2)**(1.5) & 
+             -(gamma * Ms * (W(2) - d))/(W(1)**2 + (W(2) - d)**2 + W(3)**2)**(1.5) &
+             + 2 * omegaz * W(4) - omegaz**2 * (W(2) - d)
+        W(9) = -(gamma * Mr * W(3))/(W(1)**2 + W(2)**2 + W(3)**2)**(1.5) &
+             -(gamma * Ms * W(3))/(W(1)**2 + (W(2) - d)**2 + W(3)**2)**(1.5) 
+
+
+        do i = 1,6
+           if (i > 3)  then                           !  Beseitigt nichtvorhandene Matrixelem.                   
+              A = 0.0                                 !  K(1,7),K(1,8),...,K(1,10)                               
+           else                                       
+              A = 1.0
+           end if
+           k4(i) = dt * (W(i+3) + k3(i+3) * A)
+           W(i) = W(i) + k1(i)/6. + k2(i)/3. + k3(i)/3. + k4(i)/6. !Algorithmus
+        end do
+
+
+
+
+        t = q * dt          
+
+        if (W(2) > L1+R) then
+           stop 
         end if
-        k4(i) = dt * (W(i+3) + k3(i+3) * A)
-        W(i) = W(i) + k1(i)/6. + k2(i)/3. + k3(i)/3. + k4(i)/6. !Algorithmus
-     end do
+
+        if (W(2) < L1-R) then
+           stop 
+        end if
 
 
 
-
-     t = q * dt          
-     
-     if (W(2) > L1+R) then
-     stop 
-     end if
-     
-     if (W(2) < L1-R) then
-     stop 
-     end if
+        !write(*,*) W(2)/R, W(1)/R!W(2)=y-Koordinate in Rhearadien, W(1)=x-Koordinate in Rhearadien
+        !write(*,*) W(2)/R, W(5) * (3600/1000) 
+         write(*,*) schrittzaehler, t/3600, W(2)/1000
+        !write(*,*) t, W(2)-L1!/R
 
 
-
-     !write(*,*) W(2)/R, W(1)/R!W(2)=y-Koordinate in Rhearadien, W(1)=x-Koordinate in Rhearadien
-     !write(*,*) W(2)/R, W(5) * (3600/1000) 
-      write(*,*) t/3600, W(2)/1000
-     !write(*,*) t, W(2)-L1!/R
+     end do !Ende der grossen do-Zeitschleife 
 
 
-  end do !Ende der grossen do-Zeitschleife 
+  end do Schrittweite
+
 
 end program TeilchenTrajektorie
