@@ -163,13 +163,13 @@ program TeilchenTrajektorie
 
         t = q * dt          
 
-        if (W(2) > L1+R) then
-           exit 
-        end if
+!        if (W(2) > L1+R) then
+!           exit 
+!        end if
 
-        if (W(2) < L1-R) then
-           exit
-        end if
+!        if (W(2) < L1-R) then
+!           exit
+ !       end if
 
 
 
