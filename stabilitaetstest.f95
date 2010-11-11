@@ -182,7 +182,7 @@ program TeilchenTrajektorie
         !write(*,*) t, W(2)-L1!/R
 
         write(*,523) dt, schrittzaehler, t/3600, W(2)/1000 
-523     format(F10.3, 3X, F10.3, 3X, F10.3, 3X, F10.3)
+523     format(F10.3, 3X, I3, 3X, F10.3, 3X, F10.3)
 
 
      end do !Ende der grossen do-Zeitschleife 
