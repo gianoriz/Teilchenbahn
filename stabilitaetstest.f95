@@ -11,7 +11,7 @@ program TeilchenTrajektorie
   double precision zr, v_zr, a_zr       !z-Koord. & Geschw. im Rhea-Ruhesystem 
   double precision t, dt                !Flugzeit & Zeitintervall
   double precision v_0                  !Anfangsgeschw.              
-  double precision alpha                !Abwurfwinkel                    
+!  double precision alpha                !Abwurfwinkel                    
   double precision omegaz               !Winkelgeschw. in z-Richtung 
   double precision gamma                !Gravitationskonstante       
   double precision Ms, Mr               !Masse Saturn, Masse Rhea    
@@ -58,6 +58,9 @@ program TeilchenTrajektorie
 do schrittzaehler = 1, 100
 
   dt = schrittzaehler * 1.0 
+  write(*,*) dt
+end do !Schrittweite
+
 
 write(*,*) "#######################################################################"
 
@@ -180,7 +183,7 @@ write(*,*) "####################################################################
 
 
 !  end do Schrittweite
- end do !Schrittweite
+
 
 
 end program TeilchenTrajektorie
