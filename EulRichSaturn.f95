@@ -138,7 +138,7 @@ program SaturnRheaTeilchen
 
 
         write(*,523) "dt:", schrittzaehler, t/3600, y/1000
-523     format(A3, 1X, I3, 3X, F10.3, 3X, F15.3)
+523     format(A3, 1X, I3, 3X, F10.3, 3X, F20.3)
 
 
 
