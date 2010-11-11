@@ -62,7 +62,6 @@ program SaturnRheaTeilchen
 
      Zeitschleife : do i = 0, n                    
 
-
         a_x = -(gamma * Mr * x)/(x**2 + y**2 + z**2)**(1.5) & 
              -(gamma * Ms * x)/(x**2 + (y - d)**2 + z**2)**(1.5) & 
              + 2 * omegaz * v_y + omegaz**2 * x
