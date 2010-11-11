@@ -30,21 +30,21 @@ program SaturnRheaTeilchen
   Rs = (120536000.0 + 108728000.0)/4        ![m] Saturnradius           (Wiki) 
   d  = 527040000.0                          ![m] Entf. Rhea zu Saturn   (Wiki) 
   L1 = d - (d/( sqrt(Mr/Ms)+1))             ![m] Lagrangepunkt
-
+  omegaz = 0.0
 
 
 
   ! Startwerte: (sind angegeben in s, m, m/s, m/s²)
   !t = 0.0 
-  x = L1!0.0 
-  y = 0.0!L1  
+  x = 0.0 
+  y = L1  
   z = 0.0
   v_x = 0.0
   v_y = 0.0
   v_z = 0.0 
   a_x = -(gamma * Mr * x)/(x**2 + y**2 + z**2)**(1.5) & 
        -(gamma * Ms * x)/(x**2 + (y - d)**2 + z**2)**(1.5) & 
-       - 2 * omegaz * v_y - omegaz**2 * x
+       + 2 * omegaz * v_y + omegaz**2 * x
   a_y = -(gamma * Mr * y)/(x**2 + y**2 + z**2)**(1.5) & 
        -(gamma * Ms * (y - d))/(x**2 + (y - d)**2 + z**2)**(1.5) &
        + 2 * omegaz * v_x - omegaz**2 * (y - d)
@@ -55,9 +55,8 @@ program SaturnRheaTeilchen
   n = 100000    !Anzahl der Iterationen
 
   do schrittzaehler = 1, 5
-
      dt = schrittzaehler * 1.0 
-!      write(*,*) "#######################################################################"
+     write(*,*) "#######################################################################"
 
 
 
@@ -122,9 +121,9 @@ program SaturnRheaTeilchen
         t = i * dt                         
 
 
-!        if .FALSE. then !abs(y - L1) > 1000* Rr) then
-!           exit 
-!        end if
+        !        if .FALSE. then !abs(y - L1) > 1000* Rr) then
+        !           exit 
+        !        end if
 
 
         write(*,523) "dt:", schrittzaehler, t/3600, y/1000
