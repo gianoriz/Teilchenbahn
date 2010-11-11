@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "AUFRUF MIT ./run euler.f95"
+echo "AUFRUF MIT ./run EulRichSaturn"
 
 echo "============================================================="
 echo "LADE AUF GITHUB HOCH"
@@ -15,9 +15,8 @@ echo "KOMPILIEREN UND STARTEN"
 # Auskommentieren mit #
 # f95 RungeKuttaNeu.f95 -o RungeKuttaNeuProg && ./RungeKuttaNeuProg
 
-Basisname=basename $1 .f95
 
-f95 $1 -o $Basisname && ./$Basisname | tee schleifentest.txt 
+f95 $1.f95 -o $1 && ./$1 | tee schleifentest.txt 
 
 
 echo "============================================================="
