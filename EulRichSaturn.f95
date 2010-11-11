@@ -138,7 +138,7 @@ program SaturnRheaTeilchen
         !write(*,*) t/3600, (y-L1)/Rr                  !Zeit[h], Abweichung [Rhearadien]
 
 
-        if (abs(y - L1) > 1000* Rr) then
+        if (false) then !abs(y - L1) > 1000* Rr) then
            exit 
         end if
 
