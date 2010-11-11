@@ -138,19 +138,19 @@ program SaturnRheaTeilchen
         !write(*,*) t/3600, (y-L1)/Rr                  !Zeit[h], Abweichung [Rhearadien]
 
 
-      !  if (100*y > L1+Rr) then
-      !     exit 
-      !  end if
+        if (100*y > L1+Rr) then
+           exit 
+        end if
 
-      !  if (y < 100* (L1-Rr)) then
-      !     exit
-      !  end if
+        if (y < 100* (L1-Rr)) then
+           exit
+        end if
 
 
 
 
         write(*,523) "dt:", schrittzaehler, t/3600, y/1000
-523     format(A3, 1X, I3, 3X, F10.3, 3X, F10.3)
+523     format(A3, 1X, I3, 3X, F10.3, 3X, F15.3)
 
 
 
