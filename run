@@ -6,7 +6,7 @@ echo "============================================================="
 echo "LADE AUF GITHUB HOCH"
 
 
-git commit -a -m "ich habe wieder etwas weitergearbeitet"
+git commit -a  -m "ich habe wieder etwas weitergearbeitet"
 git push
 
 echo "============================================================="
