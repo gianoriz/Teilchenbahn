@@ -19,7 +19,7 @@ program SaturnRheaTeilchen
   double precision d                        !Abstand Saturn-Rhea  
   double precision L1                       !Lagrangepunkt
   double precision omegaz                   !Winkelgeschw. in z-Richt.
-  integer*8 :: i, n                         !Laufvariablen
+  integer (kind=8) :: i, n                  !Laufvariablen
   integer :: schrittzaehler                 ! Fuer die Hauptschleife mit dt
 
   !Werte einsetzten: 
@@ -132,21 +132,9 @@ program SaturnRheaTeilchen
         t = i * dt                         
 
 
-
-        !write(*,*) r(1)/Radius, r(2)/Radius           !Zuerst x-Achse, dann die y-Achse 
-        !write(*,*) r(1)/Radius, v(1)* (3600/1000)     !Geschw. vs. Ort
-        !write(*,*) t/3600, (y-L1)/Rr                  !Zeit[h], Abweichung [Rhearadien]
-
-
 !        if .FALSE. then !abs(y - L1) > 1000* Rr) then
 !           exit 
 !        end if
-
-       ! if (y < 100* (L1-Rr)) then
-       !    exit
-       ! end if
-
-
 
 
         write(*,523) "dt:", schrittzaehler, t/3600, y/1000
