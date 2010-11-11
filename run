@@ -14,7 +14,7 @@ echo "KOMPILIEREN UND STARTEN"
 # f95 RungeKuttaNeu.f95 -o RungeKuttaNeuProg && ./RungeKuttaNeuProg
 
 
-f95 stabilitaetstest.f95 -o stabilitaetstestProg && ./stabilitaetstestProg | teeschleifentest.txt 
+f95 stabilitaetstest.f95 -o stabilitaetstestProg && ./stabilitaetstestProg | tee schleifentest.txt 
 
 echo "============================================================="
 echo "JETZT KOMMT GNUPLOT "
