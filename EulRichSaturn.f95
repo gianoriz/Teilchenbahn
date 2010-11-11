@@ -35,7 +35,7 @@ program SaturnRheaTeilchen
 
 
   ! Startwerte: (sind angegeben in s, m, m/s, m/s²)
-  t = 0.0 
+  !t = 0.0 
   x = 0.0 
   y = L1  
   z = 0.0
