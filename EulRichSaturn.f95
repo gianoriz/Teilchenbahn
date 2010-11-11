@@ -54,7 +54,7 @@ program SaturnRheaTeilchen
 
   n = 100000    !Anzahl der Iterationen
 
-  do schrittzaehler = 1, 1
+  do schrittzaehler = 1, 5
 
      dt = schrittzaehler * 1.0 
 !      write(*,*) "#######################################################################"
