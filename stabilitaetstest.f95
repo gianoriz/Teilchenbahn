@@ -54,7 +54,8 @@ program TeilchenTrajektorie
   dt   = 1.0                                       ![s]
   n    = 100000                                     ![Anzahl der Iterationen]
 
-  Schrittweite: do schrittzaehler = 1, 100
+!  Schrittweite: 
+do schrittzaehler = 1, 100
 
   dt = schrittzaehler * 1.0 
 
@@ -178,7 +179,8 @@ write(*,*) "####################################################################
      end do !Ende der grossen do-Zeitschleife 
 
 
-  end do Schrittweite
+!  end do Schrittweite
+ end do !Schrittweite
 
 
 end program TeilchenTrajektorie
