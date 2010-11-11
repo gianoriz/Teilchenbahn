@@ -163,13 +163,13 @@ write(*,*) "####################################################################
 
         t = q * dt          
 
-        if (W(2) > L1+R) then
-           return 
-        end if
+!        if (W(2) > L1+R) then
+!           return 
+!        end if
 
-        if (W(2) < L1-R) then
-           return
-        end if
+!        if (W(2) < L1-R) then
+!           return
+!        end if
 
 
 
