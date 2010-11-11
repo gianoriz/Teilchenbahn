@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "AUFRUF MIT ./run euler.f95"
+
 echo "============================================================="
 echo "LADE AUF GITHUB HOCH"
 
@@ -13,8 +15,10 @@ echo "KOMPILIEREN UND STARTEN"
 # Auskommentieren mit #
 # f95 RungeKuttaNeu.f95 -o RungeKuttaNeuProg && ./RungeKuttaNeuProg
 
+Basisname=basename $1 .f95
 
-f95 stabilitaetstest.f95 -o stabilitaetstestProg && ./stabilitaetstestProg | tee schleifentest.txt 
+f95 $1 -o $Basisname && ./$Basisname | tee schleifentest.txt 
+
 
 echo "============================================================="
 echo "JETZT KOMMT GNUPLOT "
