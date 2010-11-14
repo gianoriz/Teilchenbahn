@@ -62,7 +62,7 @@ program TeilchenUmSaturnTest
 !  a_z = -(gamma * Ms * z)/(x**2 + (y - d)**2 + z**2)**(1.5)
 
 
-  dt   = 1000.0                                       ![s]
+  dt   = 1000000.0                                       ![s]
 
   !Runge-Kutta-Solver:
 
