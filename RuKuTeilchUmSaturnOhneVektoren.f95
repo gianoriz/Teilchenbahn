@@ -54,7 +54,7 @@ program TeilchenUmSaturnTest
   v_y = 0.0                                                         ![m/s]  Startgeschwindigkeit
   v_z = 0.0                                                         ![m/s]  Startgeschwindigkeit 
 
-  dt   = 1000000.0                                       ![s]
+  dt   = 10000.0                                       ![s]
 
 
   Zeitschleife : do counter = 0, 1000                                    ![Anzahl der Iterationen]
