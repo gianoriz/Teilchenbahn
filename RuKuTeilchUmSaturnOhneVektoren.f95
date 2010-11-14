@@ -9,7 +9,7 @@ program TeilchenUmSaturnTest
   real(kind=mem) :: x, v_x, a_x       !x-Koord. & Geschw. im Rhea-Ruhesystem  
   real(kind=mem) :: y, v_y, a_y       !y-Koord. & Geschw. im Rhea-Ruhesystem
   real(kind=mem) :: z, v_z, a_z       !z-Koord. & Geschw. im Rhea-Ruhesystem 
-  real(kind=mem) :: t, dt                !Flugzeit & Zeitintervall
+  real(kind=mem) :: dt                !Flugzeit & Zeitintervall
   real(kind=mem) :: omegaz               !Winkelgeschw. in z-Richtung 
   real(kind=mem) :: gamma                !Gravitationskonstante       
   real(kind=mem) :: Ms, Mr               !Masse Saturn, Masse Rhea    
@@ -97,17 +97,13 @@ program TeilchenUmSaturnTest
 
 
      !###################################################################
-  !Runge-Kutta-Solver:
+     !Runge-Kutta-Solver:
      x   = x   + k11/6. + k21/3. + k31/3. + k41/6.  
      y   = y   + k12/6. + k22/3. + k32/3. + k42/6.  
 
      v_x = v_x + k14/6. + k24/3. + k34/3. + k44/6.  
      v_y = v_y + k15/6. + k25/3. + k35/3. + k45/6.    
      !###################################################################
-
-
-     t = counter * dt          
-
 
      write(*,*) y/Rhearadius, x/Rhearadius
 
