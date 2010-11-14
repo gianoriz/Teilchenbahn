@@ -49,9 +49,9 @@ program TeilchenUmSaturnTest
 
 
   !STARTWERTE DES TEILCHENS IM RUHESYSTEM VON RHEA: 
-  x   = 0.0  !x  Vertikalachse                                      ![m]    Startpunkt
-  y   = R    !y  Horizontalachse                                    ![m]    Startpunkt             
-  z   = 0.0  !z                                                     ![m]    Startpunkt                                  
+  x   = 0.0           !x  Vertikalachse                                      ![m]    Startpunkt
+  y   = Rhearadius    !y  Horizontalachse                                    ![m]    Startpunkt             
+  z   = 0.0           !z                                                     ![m]    Startpunkt                                  
   v_x = 0.0                                                         ![m/s]  Startgeschwindigkeit
   v_y = 0.0                                                         ![m/s]  Startgeschwindigkeit
   v_z = 0.0                                                         ![m/s]  Startgeschwindigkeit 
