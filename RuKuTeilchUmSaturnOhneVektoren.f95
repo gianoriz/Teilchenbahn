@@ -57,9 +57,9 @@ program TeilchenUmSaturnTest
   dt   = 10000.0                                       ![s]
 
 
-  Zeitschleife : do counter = 0, 1000                                    ![Anzahl der Iterationen]
+  Zeitschleife : do counter = 0, 100                                    ![Anzahl der Iterationen]
 
-1     a_x = -(gamma * Ms * x)/(x**2 + (y - d)**2 + z**2)**(1.5) &
+     a_x = -(gamma * Ms * x)/(x**2 + (y - d)**2 + z**2)**(1.5) &
           + 2 * omegaz * v_y + omegaz**2 * x
      a_y = -(gamma * Ms * (y - d))/(x**2 + (y - d)**2 + z**2)**(1.5) &
           - 2 * omegaz * v_x + omegaz**2 * (y - d)
