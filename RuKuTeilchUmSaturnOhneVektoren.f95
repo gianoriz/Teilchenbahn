@@ -27,7 +27,7 @@ program TeilchenUmSaturnTest
   real(kind=mem) :: Saturnradius                  !Saturnradius
   real(kind=mem) :: Rhearadius                    !Rhearadius              
 
-  integer(kind=8) :: q
+  integer(kind=8) :: counter
 
   !#####################################
   !Koordinatenursprung liegt bei Rhea
@@ -66,7 +66,7 @@ program TeilchenUmSaturnTest
 
   !Runge-Kutta-Solver:
 
-  Zeitschleife : do q = 0, 5000000                                    ![Anzahl der Iterationen]
+  Zeitschleife : do counter = 0, 5000000                                    ![Anzahl der Iterationen]
 
      a_x = -(gamma * Ms * x)/(x**2 + (y - d)**2 + z**2)**(1.5) &
           + 2 * omegaz * v_y + omegaz**2 * x
@@ -115,7 +115,7 @@ program TeilchenUmSaturnTest
      !###################################################################
 
 
-     t = q * dt          
+     t = counter * dt          
 
 
      write(*,*) y/Rhearadius, x/Rhearadius
