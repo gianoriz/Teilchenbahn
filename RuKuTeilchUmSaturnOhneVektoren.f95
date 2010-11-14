@@ -54,7 +54,7 @@ program TeilchenUmSaturnTest
   v_y = 0.0                                                         ![m/s]  Startgeschwindigkeit
   v_z = 0.0                                                         ![m/s]  Startgeschwindigkeit 
 
-  dt   = 10000.0                                       ![s]
+  dt   = 100.0                                       ![s]
 
 
   Zeitschleife : do counter = 0, 100                                    ![Anzahl der Iterationen]
@@ -64,7 +64,6 @@ program TeilchenUmSaturnTest
      a_y = -(gamma * Ms * (y - d))/(x**2 + (y - d)**2 + z**2)**(1.5) &
           - 2 * omegaz * v_x + omegaz**2 * (y - d)
      a_z = -(gamma * Ms * z)/(x**2 + (y - d)**2 + z**2)**(1.5)
-
 
 
      k11 = dt * v_x
