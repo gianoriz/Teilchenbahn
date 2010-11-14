@@ -4,28 +4,28 @@ program TeilchenUmSaturnTest
   implicit none   
 
   !DEFINITION DER VARIABLEN:
-  integer, parameter :: mem = 12    ! Variablengroesse
+  integer, parameter :: mem = selected_real_kind(10,12)    ! Variablengroesse
 
-  real(kind=mem)  x, v_x, a_x       !x-Koord. & Geschw. im Rhea-Ruhesystem  
-  real(kind=mem)  y, v_y, a_y       !y-Koord. & Geschw. im Rhea-Ruhesystem
-  real(kind=mem)  z, v_z, a_z       !z-Koord. & Geschw. im Rhea-Ruhesystem 
-  real(kind=mem)  t, dt                !Flugzeit & Zeitintervall
-  real(kind=mem)  omegaz               !Winkelgeschw. in z-Richtung 
-  real(kind=mem)  gamma                !Gravitationskonstante       
-  real(kind=mem)  Ms, Mr               !Masse Saturn, Masse Rhea    
-
-
-
-  real(kind=mem)  k11, k12, k13, k14, k15, k16
-  real(kind=mem)  k21, k22, k23, k24, k25, k26
-  real(kind=mem)  k31, k32, k33, k34, k35, k36
-  real(kind=mem)  k41, k42, k43, k44, k45, k46
+  real(kind=mem) :: x, v_x, a_x       !x-Koord. & Geschw. im Rhea-Ruhesystem  
+  real(kind=mem) :: y, v_y, a_y       !y-Koord. & Geschw. im Rhea-Ruhesystem
+  real(kind=mem) :: z, v_z, a_z       !z-Koord. & Geschw. im Rhea-Ruhesystem 
+  real(kind=mem) :: t, dt                !Flugzeit & Zeitintervall
+  real(kind=mem) :: omegaz               !Winkelgeschw. in z-Richtung 
+  real(kind=mem) :: gamma                !Gravitationskonstante       
+  real(kind=mem) :: Ms, Mr               !Masse Saturn, Masse Rhea    
 
 
-  real(kind=mem)  Pi = 3.14159265358979323846   !Ludolphsche Zahl 
-  real(kind=mem)  d, L1                         !Abstand Saturn-Rhea;L1
-  real(kind=mem)  Saturnradius                  !Saturnradius
-  real(kind=mem)  Rhearadius                    !Rhearadius              
+
+  real(kind=mem) :: k11, k12, k13, k14, k15, k16
+  real(kind=mem) :: k21, k22, k23, k24, k25, k26
+  real(kind=mem) :: k31, k32, k33, k34, k35, k36
+  real(kind=mem) :: k41, k42, k43, k44, k45, k46
+
+
+  real(kind=mem) :: Pi = 3.14159265358979323846   !Ludolphsche Zahl 
+  real(kind=mem) :: d, L1                         !Abstand Saturn-Rhea;L1
+  real(kind=mem) :: Saturnradius                  !Saturnradius
+  real(kind=mem) :: Rhearadius                    !Rhearadius              
 
   integer(kind=8) :: q
 
