@@ -62,11 +62,11 @@ program TeilchenUmSaturnTest
 !  a_z = -(gamma * Ms * z)/(x**2 + (y - d)**2 + z**2)**(1.5)
 
 
-  dt   = 10.0                                       ![s]
+  dt   = 1000.0                                       ![s]
 
   !Runge-Kutta-Solver:
 
-  Zeitschleife : do counter = 0, 1000000                                    ![Anzahl der Iterationen]
+  Zeitschleife : do counter = 0, 10000                                    ![Anzahl der Iterationen]
 
      a_x = -(gamma * Ms * x)/(x**2 + (y - d)**2 + z**2)**(1.5) &
           + 2 * omegaz * v_y + omegaz**2 * x
