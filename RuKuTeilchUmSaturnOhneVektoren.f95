@@ -4,18 +4,13 @@ program TeilchenUmSaturnTest
   implicit none   
 
   !DEFINITION DER VARIABLEN:
-  !integer, parameter :: rk = SELECTED_REAL_KIND(10,30)
   double precision x, v_x, a_x       !x-Koord. & Geschw. im Rhea-Ruhesystem  
   double precision y, v_y, a_y       !y-Koord. & Geschw. im Rhea-Ruhesystem
   double precision z, v_z, a_z       !z-Koord. & Geschw. im Rhea-Ruhesystem 
   double precision t, dt                !Flugzeit & Zeitintervall
-  double precision v_0                  !Anfangsgeschw.              
-  !double precision alpha                !Abwurfwinkel                    
   double precision omegaz               !Winkelgeschw. in z-Richtung 
   double precision gamma                !Gravitationskonstante       
   double precision Ms, Mr               !Masse Saturn, Masse Rhea    
-  !double precision v_r                  !Geschw. von Rhea um Saturn  
-
 
 
 
@@ -25,13 +20,12 @@ program TeilchenUmSaturnTest
   double precision k41, k42, k43, k44, k45, k46
 
 
-  double precision Pi                            !Ludolphsche Zahl 
-  double precision d, L1, L2                     !Abstand Saturn-Rhea;L1,L2=Lagrangepunkte
-  double precision S                             !Gemeinsamer Schwerpunkt
-  double precision Rs                            !Saturnradius
-  double precision R                             !Rhearadius              
-  integer(kind=8) :: q, n, i, j                  !Laufvariablen
+  double precision Pi = 3.14159265358979323846   !Ludolphsche Zahl 
+  double precision d, L1                         !Abstand Saturn-Rhea;L1
+  double precision Saturnradius                  !Saturnradius
+  double precision Rhearadius                    !Rhearadius              
 
+  integer(kind=8) :: q
 
   !#####################################
   !Koordinatenursprung liegt bei Rhea
@@ -39,14 +33,13 @@ program TeilchenUmSaturnTest
 
 
   !SETZE KONSTANTEN & PARAMETER:
-  Pi = 3.14159265358979323846 
   gamma = 6.67428e-11                               ![m³/kg*s²]                 (Wiki)
   d = 527040000.0                                   ![m]   Entf. Rhea zu Saturn (Wiki) 
   Ms = 5.685e26                                     ![kg]  Masse Saturn         (Wiki)
   Mr = 0.000023166e26                               ![kg]  Masse Rhea 2.3166e21 (berechnet) 
   L1 = d - (d/( sqrt(Mr/Ms)+1.0))                   ![m]                        (berechnet)
-  R = 764000.0                                      ![m]   Rhearadius           (Wiki) 
-  Rs = (120536000.0 + 108728000.0)/4                ![m]   Saturnradius         (Wiki)
+  Rhearadius = 764000.0                                      ![m]   Rhearadius           (Wiki) 
+  Saturnradius = (120536000.0 + 108728000.0)/4                ![m]   Saturnradius         (Wiki)
   omegaz = sqrt((gamma * Ms)/(d**3))               ![1/s] Winkelgeschw.        (berechnet) 
 
 
@@ -128,7 +121,7 @@ program TeilchenUmSaturnTest
      t = q * dt          
 
 
-     write(*,*) y/R, x/R
+     write(*,*) y/Rhearadius, x/Rhearadius
 
   end do Zeitschleife
 
