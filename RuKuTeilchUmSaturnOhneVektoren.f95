@@ -27,7 +27,7 @@ program TeilchenUmSaturnTest
   real(kind=mem) :: Saturnradius                  !Saturnradius
   real(kind=mem) :: Rhearadius                    !Rhearadius              
 
-  integer(kind=8) :: counter
+  integer(kind=8) :: counter, i
 
   !#####################################
   !Koordinatenursprung liegt bei Rhea
@@ -44,6 +44,7 @@ program TeilchenUmSaturnTest
   Saturnradius = (120536000.0 + 108728000.0)/4                ![m]   Saturnradius         (Wiki)
   omegaz = sqrt((gamma * Ms)/(d**3))               ![1/s] Winkelgeschw.        (berechnet) 
 
+  !integer :: Rundenzaehler 
 
 
   !STARTWERTE DES TEILCHENS IM RUHESYSTEM VON RHEA: 
@@ -54,16 +55,19 @@ program TeilchenUmSaturnTest
   v_y = 0.0                                                         ![m/s]  Startgeschwindigkeit
   v_z = 0.0                                                         ![m/s]  Startgeschwindigkeit 
 
-  dt   = 100.0                                       ![s]
+  dt   = 1.0                                       ![s]
 
 
-  Zeitschleife : do counter = 0, 100                                    ![Anzahl der Iterationen]
+  Zeitschleife : do counter = 0, 1000000                                    ![Anzahl der Iterationen]
 
      a_x = -(gamma * Ms * x)/(x**2 + (y - d)**2 + z**2)**(1.5) &
-          + 2 * omegaz * v_y + omegaz**2 * x
+          - 2 * omegaz * v_y - omegaz**2 * x
      a_y = -(gamma * Ms * (y - d))/(x**2 + (y - d)**2 + z**2)**(1.5) &
-          - 2 * omegaz * v_x + omegaz**2 * (y - d)
+          + 2 * omegaz * v_x - omegaz**2 * (y - d)
      a_z = -(gamma * Ms * z)/(x**2 + (y - d)**2 + z**2)**(1.5)
+
+
+
 
 
      k11 = dt * v_x
@@ -73,6 +77,8 @@ program TeilchenUmSaturnTest
      k15 = dt * a_y
 
 
+
+
      k21 = dt * (v_x + k14/2.)  
      k22 = dt * (v_y + k15/2.)  
 
@@ -80,11 +86,16 @@ program TeilchenUmSaturnTest
      k25 = dt * (a_y)
 
 
+
+
      k31 = dt * (v_x + k24/2.)
      k32 = dt * (v_y + k25/2.) 
 
      k34 = dt * (a_x)
      k35 = dt * (a_y)
+
+
+
 
 
      k41 = dt * (v_x + k34)
@@ -98,6 +109,8 @@ program TeilchenUmSaturnTest
      !###################################################################
      !Runge-Kutta-Solver:
      x   = x   + k11/6. + k21/3. + k31/3. + k41/6.  
+
+
      y   = y   + k12/6. + k22/3. + k32/3. + k42/6.  
 
      v_x = v_x + k14/6. + k24/3. + k34/3. + k44/6.  
@@ -106,6 +119,8 @@ program TeilchenUmSaturnTest
 
      write(*,*) y/Rhearadius, x/Rhearadius
 
-  end do Zeitschleife
+
+end do Zeitschleife
 
 end program TeilchenUmSaturnTest
+ 
