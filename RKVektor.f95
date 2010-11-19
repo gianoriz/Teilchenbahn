@@ -24,7 +24,7 @@ module vectors
 
   public :: vector, cross, scalar
 
-  type, vector
+  type vector
      double precision :: x,y,z                     !Komponenten des Vektors sind reelle Zahlen
      character(len=20) :: SIunit                   !Einheit des Vektors in SI Einheiten  (z.B. m/s)
   end type vector
@@ -105,8 +105,6 @@ program TeilchenbahnNeu
   TYPE (vector) :: vektora
   TYPE (vector) :: vektorb
 
- data vektora 
-
   ! Berechnete Variablen *******************
   L1 = d - (d/( sqrt(MRhea/MSaturn)+1.0)) 
   omegaz = sqrt((gamma * MSaturn)/(d**3))
@@ -115,6 +113,7 @@ program TeilchenbahnNeu
   call Werteausgeben
 
   
+vektora%x = 1.d0
 
 end program TeilchenbahnNeu
 
@@ -136,8 +135,7 @@ end function Betrag3
 
 
 
-!---------------------------------------
-double precision  function Fg(x,y,z)
+type(vector)  function Fg(x,y,z)
   use Saturndata
   use vectors
   implicit none
@@ -146,12 +144,10 @@ double precision  function Fg(x,y,z)
 
   return
 end function Fg
-!---------------------------------------
 
 
 
-!---------------------------------------
-double precision  function Fc(x,y,z)
+type(vector)  function Fc(x,y,z)
   use Saturndata
   use vectors
   implicit none
@@ -160,12 +156,9 @@ double precision  function Fc(x,y,z)
 
   return
 end function Fc
-!---------------------------------------
 
 
-
-!---------------------------------------
-double precision  function Fz(x,y,z)
+type(vector)  function Fz(x,y,z)
   use Saturndata
   use vectors
   implicit none
@@ -174,7 +167,7 @@ double precision  function Fz(x,y,z)
 
   return
 end function Fz
-!---------------------------------------
+
 
 
 
@@ -191,3 +184,11 @@ end subroutine Werteausgeben
 ! Wissen-Konserve:
 ! COMMON http://www.obliquity.com/computer/fortran/common.html
 ! MODULE https://srv.rz.uni-bayreuth.de/lehre/fortran90/vorlesung/V08/V08.html
+
+
+
+! Wie es weiter geht:
+! Constructor und Interface fuer Vektor erzeugen
+! Datentyp Vektor testen
+! Alle Funktionen zur Vektorrechnung von double precision auf vector umstellen und mit Rechnung fuellen
+! Funktionen testen
