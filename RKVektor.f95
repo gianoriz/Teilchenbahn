@@ -7,6 +7,7 @@ module Saturndata
   double precision  :: d =  527040000.0            ![m]        Entf. Rhea zu Saturn (Wiki) 
   double precision  :: MSaturn = 5.685e26          ![kg]       Masse Saturn         (Wiki)
   double precision  :: MRhea = 0.000023166e26      ![kg]       Masse Rhea 2.3166e21 (berechnet) 
+  double precision  :: MStein = 1.d0                  ![kg]       Masse Rhea 2.3166e21 (berechnet) 
   double precision  :: L1                          ![m]        Lagrangepunkt        (berechnet)
   double precision  :: RRhea = 764000.0            ![m]        Rhearadius           (Wiki) 
   double precision  :: RSaturn = 57316000.0        ![m]        Saturnradius         (Wiki)
@@ -29,6 +30,22 @@ module vectors
      character(len=20) :: SIunit                   !Einheit des Vektors in SI Einheiten  (z.B. m/s)
   end type vector
 
+  interface operator (-)
+     module procedure vsub
+  end interface
+
+  interface operator (+)
+     module procedure vadd
+  end interface
+
+  interface operator (*)
+     module procedure scalar
+  end interface
+
+  interface operator (.kreuz.)
+     module procedure cross
+  end interface
+
 contains
   function cross(a, b)                             !Kreuzprodukt von Vektoren
     TYPE (vector), INTENT (in) :: a, b
@@ -43,6 +60,7 @@ contains
     TYPE (vector), INTENT (in) :: a, b
     double precision :: scalar
     scalar = (a%x * b%x) + (a%y * b%y) + (a%z * b%z)
+    ! FIXME    vadd%SIunit = a%SIunit & "*" & b%SIunit  !! DIESE ZEILE MUSS ZEICHENKETTE ANEINANDERHAENGEN!
   end function scalar
 
   function vabs(a)                                 !Betrag eines Vektors
@@ -54,17 +72,29 @@ contains
   function vadd(a,b)                               !Addition von Vektoren
     TYPE (vector), INTENT (in) :: a, b
     TYPE (vector) :: vadd
+    !   if (a%SIunit == b%SIunit) then
     vadd%x = a%x + b%x
     vadd%y = a%y + b%y
     vadd%z = a%z + b%z
+    vadd%SIunit = a%SIunit
+    !   else 
+    !      write(*,*) "EE: Vektoren inkompatibel!"
+    !      stop
+    !   end if
   end function vadd
 
   function vsub(a,b)                               !Subtraktion von Vektoren
     TYPE (vector), INTENT (in) :: a, b
     TYPE (vector) :: vsub
+    !    if (a%SIunit == b%SIunit) then
     vsub%x = a%x - b%x
     vsub%y = a%y - b%y
     vsub%z = a%z - b%z
+    vsub%SIunit = a%SIunit
+    !   else 
+    !       write(*,*) "EE: Vektoren inkompatibel!"
+    !       stop
+    !    end if
   end function vsub
 
   function vsmul(a,s)                              !Skalarmultiplikation
@@ -74,10 +104,11 @@ contains
     vsmul%x = a%x * s
     vsmul%y = a%y * s
     vsmul%z = a%z * s
+    vsmul%SIunit = a%SIunit
   end function vsmul
 
-! Benoetigen hier eigentlich noch Constructor und Methoden zum Datenaustausch
-! Das MUSS nachgebessert werden wir haben jetzt aber Hunger!
+  ! Benoetigen hier eigentlich noch Constructor und Methoden zum Datenaustausch
+  ! Das MUSS nachgebessert werden wir haben jetzt aber Hunger!
 
 end module vectors
 
@@ -95,25 +126,42 @@ program TeilchenbahnNeu
 
   ! Funktionen *****************************
   double precision :: Betrag3
-  double precision :: Wurzel
-  double precision :: Fc
-  double precision :: Fz
-  double precision :: Fg
+  type (vector) :: Fc
+  type (vector) :: Fz
+  type (vector) :: Fg
 
   ! Variablen ******************************
   TYPE (vector) :: Nullvektor
-  TYPE (vector) :: vektora
+  TYPE (vector) :: vektora 
   TYPE (vector) :: vektorb
 
   ! Berechnete Variablen *******************
   L1 = d - (d/( sqrt(MRhea/MSaturn)+1.0)) 
   omegaz = sqrt((gamma * MSaturn)/(d**3))
 
-  dt = 42
-  call Werteausgeben
 
-  
-vektora%x = 1.d0
+
+  vektora%x = 1.d0
+  vektora%y = 2.d0
+  vektora%z = 4.d0
+  vektora%SIunit = "m/s"
+
+
+  vektorb%x = 5.d0
+  vektorb%y = 3.d0
+  vektorb%z = 7.d0
+
+
+
+  write(*,*) MStein, vektora, vektorb
+  write(*,*) cross(vektora,  vektorb)
+
+  vektorb%SIunit = "ft"
+
+  write(*,*) Fc(MStein, vektorb, vektora)
+  write(*,*) Fz(MStein, vektorb, vektora)
+
+
 
 end program TeilchenbahnNeu
 
@@ -129,45 +177,50 @@ double precision  function Betrag3(x,y,z)
   write(*,*) x,y,z
   Betrag3 = sqrt(x**2 + y**2 + z**2)
   return
-! TESTFUNKTION:
-! write(*,*) Betrag3(dble(1), dble(1), dble(0))
+  ! TESTFUNKTION:
+  ! write(*,*) Betrag3(dble(1), dble(1), dble(0))
 end function Betrag3
 
 
 
-type(vector)  function Fg(x,y,z)
+!type(vector)  function Fg(v1, m1, v2, m2)
+!  use Saturndata
+!  use vectors
+!  implicit none
+!  double precision , intent(in) :: x,y,z
+!
+!  Fg = gamma * MSaturn * MRhea 
+!
+!  return
+!end function Fg
+
+
+
+type(vector)  function Fc(m, w, v)
   use Saturndata
   use vectors
   implicit none
-  double precision , intent(in) :: x,y,z
+  double precision , intent(in) :: m
+  type(vector) :: w, v
 
+  write(*,*) w .kreuz. v
 
-  return
-end function Fg
-
-
-
-type(vector)  function Fc(x,y,z)
-  use Saturndata
-  use vectors
-  implicit none
-  double precision , intent(in) :: x,y,z
-
-
+  Fc = vsmul((w .kreuz. v), (2 * m))
   return
 end function Fc
 
 
-type(vector)  function Fz(x,y,z)
+type(vector)  function Fz(m, w, r)
   use Saturndata
   use vectors
   implicit none
-  double precision , intent(in) :: x,y,z
+  double precision , intent(in) :: m
+  type(vector) :: w, r
 
+  Fz = vsmul((w .kreuz. (w .kreuz. r)), m)
 
   return
 end function Fz
-
 
 
 
@@ -188,7 +241,8 @@ end subroutine Werteausgeben
 
 
 ! Wie es weiter geht:
-! Constructor und Interface fuer Vektor erzeugen
-! Datentyp Vektor testen
-! Alle Funktionen zur Vektorrechnung von double precision auf vector umstellen und mit Rechnung fuellen
-! Funktionen testen
+! DONE Constructor und Interface fuer Vektor erzeugen
+! >>>>> Datentyp Vektor testen Beispielaufgaben fuer jede Rechnung!
+! >>>>>>>>> Alle Befehle im programm verstehen
+! DONE Alle Funktionen zur Vektorrechnung von double precision auf vector umstellen und mit Rechnung fuellen
+! 
