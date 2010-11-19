@@ -1,36 +1,36 @@
+
 module Saturndata
   implicit none
   save
-
   ! Konstanten *****************************
-  double precision  :: gamma = 6.67428e-11                            ![m³/kg*s²]                 (Wiki)
-  double precision  :: d =  527040000.0                               ![m]   Entf. Rhea zu Saturn (Wiki) 
-  double precision  :: MSaturn = 5.685e26                             ![kg]  Masse Saturn         (Wiki)
-  double precision  :: MRhea = 0.000023166e26                         ![kg]  Masse Rhea 2.3166e21 (berechnet) 
-  double precision  :: L1                                             !   Lagrangepunkt        (berechnet)
-  double precision  :: RRhea = 764000.0                               ![m]   Rhearadius           (Wiki) 
-  double precision  :: RSaturn = 57316000.0                           ![m]   Saturnradius         (Wiki)
-  double precision  :: omegaz                                         ![1/s] Winkelgeschw.        (berechnet) 
-
+  double precision  :: gamma = 6.67428e-11         ![m³/kg*s²]                      (Wiki)
+  double precision  :: d =  527040000.0            ![m]        Entf. Rhea zu Saturn (Wiki) 
+  double precision  :: MSaturn = 5.685e26          ![kg]       Masse Saturn         (Wiki)
+  double precision  :: MRhea = 0.000023166e26      ![kg]       Masse Rhea 2.3166e21 (berechnet) 
+  double precision  :: L1                          ![m]        Lagrangepunkt        (berechnet)
+  double precision  :: RRhea = 764000.0            ![m]        Rhearadius           (Wiki) 
+  double precision  :: RSaturn = 57316000.0        ![m]        Saturnradius         (Wiki)
+  double precision  :: omegaz                      ![1/s]      Winkelgeschw.        (berechnet) 
   ! Globale Variablen **********************
-  double precision  :: dt                          ! Zeitintervall
-  double precision , dimension(3) :: VecX          ! Ortsvektor   
-  double precision , dimension(3) :: VecV          ! Geschwindigkeitsvektor   
-
+  double precision  :: dt                          !Zeitintervall
+  double precision , dimension(3) :: VecX          !Ortsvektor   
+  double precision , dimension(3) :: VecV          !Geschwindigkeitsvektor   
 end module Saturndata
 
+
+! Vektorrechnungen ************************
 module vectors
   implicit none
 
   public :: vector, cross, scalar
 
-  type vector
-     double precision :: x,y,z 
-     character(len=20) :: SIunit                        ! Einheit des Vektors in SI Einheiten  (z.B. m/s)
+  type, vector
+     double precision :: x,y,z                     !Komponenten des Vektors sind reelle Zahlen
+     character(len=20) :: SIunit                   !Einheit des Vektors in SI Einheiten  (z.B. m/s)
   end type vector
 
 contains
-  function cross(a, b)
+  function cross(a, b)                             !Kreuzprodukt von Vektoren
     TYPE (vector), INTENT (in) :: a, b
     TYPE (vector) :: cross
 
@@ -39,19 +39,19 @@ contains
     cross%z = a%x * b%y - a%y * b%x
   end function cross
 
-  function scalar(a, b)
+  function scalar(a, b)                            !Skalarprodukt von Vektoren
     TYPE (vector), INTENT (in) :: a, b
     double precision :: scalar
     scalar = (a%x * b%x) + (a%y * b%y) + (a%z * b%z)
   end function scalar
 
-  function vabs(a)
+  function vabs(a)                                 !Betrag eines Vektors
     TYPE (vector), INTENT (in) :: a
     double precision :: vabs
     vabs = sqrt(a%x **2 + a%y **2 + a%z **2)
   end function vabs
 
-  function vadd(a,b)
+  function vadd(a,b)                               !Addition von Vektoren
     TYPE (vector), INTENT (in) :: a, b
     TYPE (vector) :: vadd
     vadd%x = a%x + b%x
@@ -59,7 +59,7 @@ contains
     vadd%z = a%z + b%z
   end function vadd
 
-  function vsub(a,b)
+  function vsub(a,b)                               !Subtraktion von Vektoren
     TYPE (vector), INTENT (in) :: a, b
     TYPE (vector) :: vsub
     vsub%x = a%x - b%x
@@ -67,7 +67,7 @@ contains
     vsub%z = a%z - b%z
   end function vsub
 
-  function vsmul(a,s)
+  function vsmul(a,s)                              !Skalarmultiplikation
     TYPE (vector), INTENT (in) :: a
     double precision :: s
     TYPE (vector) :: vsmul
@@ -76,6 +76,8 @@ contains
     vsmul%z = a%z * s
   end function vsmul
 
+! Benoetigen hier eigentlich noch Constructor und Methoden zum Datenaustausch
+! Das MUSS nachgebessert werden wir haben jetzt aber Hunger!
 
 end module vectors
 
@@ -100,6 +102,10 @@ program TeilchenbahnNeu
 
   ! Variablen ******************************
   TYPE (vector) :: Nullvektor
+  TYPE (vector) :: vektora
+  TYPE (vector) :: vektorb
+
+ data vektora 
 
   ! Berechnete Variablen *******************
   L1 = d - (d/( sqrt(MRhea/MSaturn)+1.0)) 
@@ -108,7 +114,7 @@ program TeilchenbahnNeu
   dt = 42
   call Werteausgeben
 
-
+  
 
 end program TeilchenbahnNeu
 
