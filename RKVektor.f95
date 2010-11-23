@@ -2,6 +2,10 @@
 module Saturndata
   implicit none
   save
+
+
+
+
   ! Konstanten *****************************
   double precision  :: gamma = 6.67428e-11         ![m³/kg*s²]                      (Wiki)
   double precision  :: d =  527040000.0            ![m]        Entf. Rhea zu Saturn (Wiki) 
@@ -19,11 +23,15 @@ module Saturndata
 end module Saturndata
 
 
+
+
+
+
 ! Vektorrechnungen ************************
 module vectors
   implicit none
 
-  public :: vector, cross, scalar
+  public :: vector, cross, scalar, vsmul, svmul
 
   type vector
      double precision :: x,y,z                     !Komponenten des Vektors sind reelle Zahlen
@@ -97,7 +105,8 @@ contains
     !    end if
   end function vsub
 
-  function vsmul(a,s)                              !Skalarmultiplikation
+
+  function vsmul(a,s)                              !Skalarmultiplikation von rechts
     TYPE (vector), INTENT (in) :: a
     double precision :: s
     TYPE (vector) :: vsmul
@@ -107,10 +116,41 @@ contains
     vsmul%SIunit = a%SIunit
   end function vsmul
 
+
+
+ function svmul(s,a)                              !Skalarmultiplikation von links
+    TYPE (vector), INTENT (in) :: a
+    double precision :: s
+    TYPE (vector) :: svmul
+    svmul%x = s * a%x 
+    svmul%y = s * a%y 
+    svmul%z = s * a%z 
+    svmul%SIunit = a%SIunit
+  end function svmul
+
+
+
+
+
+
   ! Benoetigen hier eigentlich noch Constructor und Methoden zum Datenaustausch
   ! Das MUSS nachgebessert werden wir haben jetzt aber Hunger!
 
-end module vectors
+
+
+
+  function newvec(a, b, c, SIunit)
+    TYPE (vector) :: newvec
+    double precision, intent(IN) :: a, b, c
+    character(len=20) :: SIunit 
+    newvec%x = a
+    newvec%y = b
+    newvec%z = c
+    newvec%SIunit = SIunit     
+  end function newvec
+
+
+end module vectors 
 
 
 
@@ -128,38 +168,46 @@ program TeilchenbahnNeu
   double precision :: Betrag3
   type (vector) :: Fc
   type (vector) :: Fz
-  type (vector) :: Fg
+  type (vector) :: Fg 
+  type (vector) :: Fges
+
 
   ! Variablen ******************************
   TYPE (vector) :: Nullvektor
   TYPE (vector) :: vektora 
   TYPE (vector) :: vektorb
+  TYPE (vector) :: vektorc
+  TYPE (vector) :: vektord
+  double precision :: dzahl 
+
 
   ! Berechnete Variablen *******************
   L1 = d - (d/( sqrt(MRhea/MSaturn)+1.0)) 
   omegaz = sqrt((gamma * MSaturn)/(d**3))
 
 
+  vektora = newvec(4.d0, 2.d0, 8.d0, "m/s                 ")
+  vektorb = newvec(1.d0, 3.d0, 9.d0, "m/s                 ")
 
-  vektora%x = 1.d0
-  vektora%y = 2.d0
-  vektora%z = 4.d0
-  vektora%SIunit = "m/s"
-
-
-  vektorb%x = 5.d0
-  vektorb%y = 3.d0
-  vektorb%z = 7.d0
+  !Test:
+  !vektorc = cross(vektora, vektorb) !OK
+  !dzahl = scalar(vektora, vektorb) !OK
+  !vektord = vsmul(vektora, 3.d0) !OK
+  !vektord = svmul(3.d0, vektora) !OK
 
 
+  !Fges = Fg + Fc + Fz
 
-  write(*,*) MStein, vektora, vektorb
-  write(*,*) cross(vektora,  vektorb)
 
-  vektorb%SIunit = "ft"
+  write(*,*) Fges
 
-  write(*,*) Fc(MStein, vektorb, vektora)
-  write(*,*) Fz(MStein, vektorb, vektora)
+  !write(*,*) MStein, vektora, vektorb
+  !write(*,*) cross(vektora,  vektorb)
+
+
+
+  !write(*,*) Fc(MStein, vektorb, vektora)
+  !write(*,*) Fz(MStein, vektorb, vektora)
 
 
 
@@ -169,33 +217,31 @@ end program TeilchenbahnNeu
 ! P R O G R A M     E N D
 ! **********************************************************************
 
-double precision  function Betrag3(x,y,z)
+double precision  function Betrag(x,y,z)
   use Saturndata
   use vectors
   implicit none
   double precision , intent(in) :: x,y,z
   write(*,*) x,y,z
-  Betrag3 = sqrt(x**2 + y**2 + z**2)
+  Betrag = sqrt(x**2 + y**2 + z**2)
   return
   ! TESTFUNKTION:
-  ! write(*,*) Betrag3(dble(1), dble(1), dble(0))
-end function Betrag3
+  ! write(*,*) Betrag(dble(1), dble(1), dble(0))
+end function Betrag
 
 
 
-!type(vector)  function Fg(v1, m1, v2, m2)
-!  use Saturndata
-!  use vectors
-!  implicit none
-!  double precision , intent(in) :: x,y,z
-!
-!  Fg = gamma * MSaturn * MRhea 
-!
-!  return
-!end function Fg
+type(vector)  function Fg(vecr) !Wir definieren hier die Gravitationskraft als Summe der Gravikraefte von Saturn und Rhea
+  use Saturndata
+  use vectors
+  implicit none
+  Type (ec), intent(in) :: vecr!Hier weiter machen!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  Fg = -gamma * MSaturn * MTeilchen * r/r**3    !-gamma * MRhea * MTeilchen
+  return
+end function Fg
 
 
-
+!-------------------------------------------------
 type(vector)  function Fc(m, w, v)
   use Saturndata
   use vectors
@@ -246,3 +292,11 @@ end subroutine Werteausgeben
 ! >>>>>>>>> Alle Befehle im programm verstehen
 ! DONE Alle Funktionen zur Vektorrechnung von double precision auf vector umstellen und mit Rechnung fuellen
 ! 
+
+
+
+
+
+
+!Protokoll:
+!Vektor anlegen funktioniert
