@@ -10,7 +10,7 @@ module Saturndata
   double precision :: d = 527040000.0        ![m] Entf. Rhea zu Saturn  (Wiki)
   double precision :: MSaturn = 5.685e26     ![kg] Masse Saturn         (Wiki)
   double precision :: MRhea = 0.000023166e26 ![kg] Masse Rhea 2.3166e21 (berechnet)
-  double precision :: MStein = 1.d0          ![kg] Masse Rhea 2.3166e21 (berechnet)
+  double precision :: MTeilchen = 1.d0       ![kg] Masse Rhea 2.3166e21 (berechnet)
   double precision :: L1                     ![m] Lagrangepunkt         (berechnet)
   double precision :: RRhea = 764000.0       ![m] Rhearadius            (Wiki)
   double precision :: RSaturn = 57316000.0   ![m] Saturnradius          (Wiki)
@@ -157,11 +157,11 @@ program TeilchenbahnNeu
   !Test:
   !vektorc = cross(vektora, vektorb) !OK
   !dzahl = scalar(vektora, vektorb)  !OK
-   vektord = vsmul(vektora, 3.d0)    !OK
+  !vektord = vsmul(vektora, 3.d0)    !OK
   !vektord = svmul(3.d0, vektora)    !OK
 
-!write(*,*) vektord
-
+   vektord = Fg(vektora)
+   
 
   !Fges = Fg + Fc + Fz
 
@@ -187,9 +187,8 @@ type(vector) function Fg(vecr) !Wir definieren hier die Gravitationskraft als Su
   use Saturndata
   use vectors
   implicit none
-  Type (vector), intent(in) :: vecr!Hier weiter machen!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  !Fg = svmul(-gamma * MSaturn * MTeilchen *(1/vabs(vecr)**3), vecr)  
-   Fg = svmul(-gamma *(1/vabs(vecr)**3), vecr)  
+  Type (vector), intent(in) :: vecr
+  Fg = svmul(-gamma * MSaturn * MTeilchen *(1/vabs(vecr)**3), vecr)    
   return
 end function Fg
 
