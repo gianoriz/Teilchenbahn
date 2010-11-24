@@ -7,7 +7,6 @@ module Saturndata
   implicit none
   save
   double precision :: gamma = 6.67428e-11    ![m³/kg*s²]                (Wiki)
-  double precision :: d = 527040000.0        ![m] Entf. Rhea zu Saturn  (Wiki)
   double precision :: MSaturn = 5.685e26     ![kg] Masse Saturn         (Wiki)
   double precision :: MRhea = 0.000023166e26 ![kg] Masse Rhea 2.3166e21 (berechnet)
   double precision :: MTeilchen = 1.d0       ![kg] Masse Rhea 2.3166e21 (berechnet)
@@ -19,6 +18,7 @@ module Saturndata
   double precision :: dt !Zeitintervall
   double precision , dimension(3) :: VecX    !Ortsvektor
   double precision , dimension(3) :: VecV    !Geschwindigkeitsvektor
+ 
 end module Saturndata
 !##################################################################################
 
@@ -143,16 +143,19 @@ program TeilchenbahnNeu
   TYPE (vector) :: vektorb
   TYPE (vector) :: vektorc
   TYPE (vector) :: vektord
+  TYPE (vector) :: distance                      !Abstand Saturn-Rhea
+  TYPE (vector) :: RheaSaturnVec                 ![m] Entf. Rhea zu Saturn  (Wiki)
   double precision :: dzahl
 
 
   ! Berechnete Variablen *******************
-  L1 = d - (d/( sqrt(MRhea/MSaturn)+1.0))
-  omegaz = sqrt((gamma * MSaturn)/(d**3))
+  !L1 = d - (d/( sqrt(MRhea/MSaturn)+1.0))
+  !omegaz = sqrt((gamma * MSaturn)/(d**3))
 
-
+  distance = newvec(4.d0, 500000.d0, 8.d0, "m/s                 ")
   vektora = newvec(4.d0, 500000.d0, 8.d0, "m/s                 ")
   vektorb = newvec(1.d0, 3.d0, 9.d0, "m/s                 ")
+  RheaSaturnVec = newvec(0.d0, 527040000.d0, 0.d0, "m                   ")
 
   !Test:
   !vektorc = cross(vektora, vektorb) !OK
@@ -160,8 +163,8 @@ program TeilchenbahnNeu
   !vektord = vsmul(vektora, 3.d0)    !OK
   !vektord = svmul(3.d0, vektora)    !OK
 
-   vektord = Fg(vektora)
-   write(*,*) vektord
+  vektord = Fg(vektora)
+  write(*,*) vektord
 
   !Fges = Fg + Fc + Fz
 
@@ -183,12 +186,13 @@ end program TeilchenbahnNeu
 
 
 
-type(vector) function Fgsat(vec) !Wichtig: definiere erst einen Vektor vec der darstellen soll: (r - d) 
+type(vector) function Fgsat(vecr, RheaSaturnVec) !Wichtig: definiere erst einen Vektor vec der darstellen soll: (r - d) 
   use Saturndata
   use vectors
   implicit none !(Wichtig: Implecit None wird immer nach use definiert)
-  Type (vector), intent(in) :: vec
-  Fgsat = svmul(-gamma * MSaturn * MTeilchen *(1.d0/vabs(vec)**3.d0), vec)    
+  Type (vector), intent(in) :: vecr
+  Type (vector), intent(in) :: RheaSaturnVec
+  Fgsat = svmul(-gamma * MSaturn * MTeilchen *(1.d0/vabs(vsub(vecr, RheaSaturnVec))**3.d0), vsub(vecr, RheaSaturnVec))    
   return
 end function Fgsat
 
@@ -214,7 +218,14 @@ end function Fg
 
 
 
-
+type(vector) function trafo(vec, RheaSaturnVec) !Trafo-Matrix (Spaeter)
+  use Saturndata
+  use vectors
+  implicit none
+  Type (vector), intent(in) :: vec, RheaSaturnVec  
+  trafo = vsub(vec, RheaSaturnVec)!Momentan ist trafo noch auf vec gesetzt so, dass die Umrechnung spaeter erfolgt 
+  return
+end function trafo
 
 
 
