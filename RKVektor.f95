@@ -55,7 +55,7 @@ contains
   function vabs(a)                                    !Betrag eines Vektors
     TYPE (vector), INTENT (in) :: a
     double precision :: vabs
-    vabs = sqrt(a%x **2 + a%y **2 + a%z **2)
+    vabs = sqrt(a%x **2.d0 + a%y **2.d0 + a%z **2.d0)
   end function vabs
 
   function vadd(a,b)                                  !Addition von Vektoren
@@ -151,7 +151,7 @@ program TeilchenbahnNeu
   omegaz = sqrt((gamma * MSaturn)/(d**3))
 
 
-  vektora = newvec(4.d0, 2.d0, 8.d0, "m/s                 ")
+  vektora = newvec(4.d0, 500000.d0, 8.d0, "m/s                 ")
   vektorb = newvec(1.d0, 3.d0, 9.d0, "m/s                 ")
 
   !Test:
@@ -161,7 +161,7 @@ program TeilchenbahnNeu
   !vektord = svmul(3.d0, vektora)    !OK
 
    vektord = Fg(vektora)
-   
+   write(*,*) vektord
 
   !Fges = Fg + Fc + Fz
 
@@ -183,14 +183,42 @@ end program TeilchenbahnNeu
 
 
 
-type(vector) function Fg(vecr) !Wir definieren hier die Gravitationskraft als Summe der Gravikraefte von Saturn und Rhea
+type(vector) function Fgsat(vec) !Wichtig: definiere erst einen Vektor vec der darstellen soll: (r - d) 
+  use Saturndata
+  use vectors
+  implicit none !(Wichtig: Implecit None wird immer nach use definiert)
+  Type (vector), intent(in) :: vec
+  Fgsat = svmul(-gamma * MSaturn * MTeilchen *(1.d0/vabs(vec)**3.d0), vec)    
+  return
+end function Fgsat
+
+
+type(vector) function Fgrhe(vecr) 
   use Saturndata
   use vectors
   implicit none
   Type (vector), intent(in) :: vecr
-  Fg = svmul(-gamma * MSaturn * MTeilchen *(1/vabs(vecr)**3), vecr)    
+  Fgrhe = svmul(-gamma * MRhea * MTeilchen *(1.d0/vabs(vecr)**3.d0), vecr) 
+  return
+end function Fgrhe
+
+
+type(vector) function Fg(Fgsat, Fgrhe) !Fg = Summe der Gravikraefte von Saturn und Rhea
+  use Saturndata
+  use vectors
+  implicit none
+  Type (vector), intent(in) :: Fgsat, Fgrhe
+  Fg = vadd(Fgsat, Fgrhe)
   return
 end function Fg
+
+
+
+
+
+
+
+
 
 
 
