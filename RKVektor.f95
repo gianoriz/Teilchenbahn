@@ -7,10 +7,9 @@ module Saturndata
   implicit none
   save
   double precision :: gamma = 6.67428e-11    ![m³/kg*s²]                (Wiki)
-  double precision :: d = 527040000.0        ![m] Entf. Rhea zu Saturn  (Wiki)
   double precision :: MSaturn = 5.685e26     ![kg] Masse Saturn         (Wiki)
   double precision :: MRhea = 0.000023166e26 ![kg] Masse Rhea 2.3166e21 (berechnet)
-  double precision :: MStein = 1.d0          ![kg] Masse Rhea 2.3166e21 (berechnet)
+  double precision :: MTeilchen = 1.d0       ![kg] Masse Rhea 2.3166e21 (berechnet)
   double precision :: L1                     ![m] Lagrangepunkt         (berechnet)
   double precision :: RRhea = 764000.0       ![m] Rhearadius            (Wiki)
   double precision :: RSaturn = 57316000.0   ![m] Saturnradius          (Wiki)
@@ -19,6 +18,7 @@ module Saturndata
   double precision :: dt !Zeitintervall
   double precision , dimension(3) :: VecX    !Ortsvektor
   double precision , dimension(3) :: VecV    !Geschwindigkeitsvektor
+ 
 end module Saturndata
 !##################################################################################
 
@@ -55,7 +55,7 @@ contains
   function vabs(a)                                    !Betrag eines Vektors
     TYPE (vector), INTENT (in) :: a
     double precision :: vabs
-    vabs = sqrt(a%x **2 + a%y **2 + a%z **2)
+    vabs = sqrt(a%x **2.d0 + a%y **2.d0 + a%z **2.d0)
   end function vabs
 
   function vadd(a,b)                                  !Addition von Vektoren
@@ -77,8 +77,8 @@ contains
   end function vsub
 
   function vsmul(a,s)                                 !Skalarmultiplikation von rechts
-    TYPE (vector), INTENT (in) :: a
-    double precision :: s
+    TYPE (vector), INTENT (in) :: a   
+    double precision, intent(in) ::s
     TYPE (vector) :: vsmul
     vsmul%x = a%x * s
     vsmul%y = a%y * s
@@ -89,7 +89,6 @@ contains
   function svmul(s,a)                                 !Skalarmultiplikation von links
     TYPE (vector), INTENT (in) :: a
     double precision, intent(in) ::s
-!    double precision :: s
     TYPE (vector) :: svmul
     svmul%x = s * a%x
     svmul%y = s * a%y
@@ -125,6 +124,7 @@ end module vectors
 
 
 program TeilchenbahnNeu
+
   use Saturndata
   use vectors
   implicit none
@@ -143,25 +143,28 @@ program TeilchenbahnNeu
   TYPE (vector) :: vektorb
   TYPE (vector) :: vektorc
   TYPE (vector) :: vektord
+  TYPE (vector) :: distance                      !Abstand Saturn-Rhea
+  TYPE (vector) :: RheaSaturnVec                 ![m] Entf. Rhea zu Saturn  (Wiki)
   double precision :: dzahl
 
 
   ! Berechnete Variablen *******************
-  L1 = d - (d/( sqrt(MRhea/MSaturn)+1.0))
-  omegaz = sqrt((gamma * MSaturn)/(d**3))
+  !L1 = d - (d/( sqrt(MRhea/MSaturn)+1.0))
+  !omegaz = sqrt((gamma * MSaturn)/(d**3))
 
-
-  vektora = newvec(4.d0, 2.d0, 8.d0, "m/s                 ")
+  distance = newvec(4.d0, 500000.d0, 8.d0, "m/s                 ")
+  vektora = newvec(4.d0, 500000.d0, 8.d0, "m/s                 ")
   vektorb = newvec(1.d0, 3.d0, 9.d0, "m/s                 ")
+  RheaSaturnVec = newvec(0.d0, 527040000.d0, 0.d0, "m                   ")
 
   !Test:
   !vektorc = cross(vektora, vektorb) !OK
   !dzahl = scalar(vektora, vektorb)  !OK
-   vektord = vsmul(vektora, 3.d0)    !OK
+  !vektord = vsmul(vektora, 3.d0)    !OK
   !vektord = svmul(3.d0, vektora)    !OK
 
-write(*,*) vektord
-
+  vektord = Fg(vektora)
+  write(*,*) vektord
 
   !Fges = Fg + Fc + Fz
 
@@ -181,56 +184,97 @@ end program TeilchenbahnNeu
 ! P R O G R A M E N D
 ! **********************************************************************
 
-double precision function Betrag(x,y,z)
+
+
+type(vector) function Fgsat(vecr, RheaSaturnVec) !Wichtig: definiere erst einen Vektor vec der darstellen soll: (r - d) 
   use Saturndata
   use vectors
-  implicit none
-  double precision , intent(in) :: x,y,z
-  write(*,*) x,y,z
-  Betrag = sqrt(x**2 + y**2 + z**2)
+  implicit none !(Wichtig: Implecit None wird immer nach use definiert)
+  Type (vector), intent(in) :: vecr
+  Type (vector), intent(in) :: RheaSaturnVec
+  Fgsat = svmul(-gamma * MSaturn * MTeilchen *(1.d0/vabs(vsub(vecr, RheaSaturnVec))**3.d0), vsub(vecr, RheaSaturnVec))    
   return
-  ! TESTFUNKTION:
-  ! write(*,*) Betrag(dble(1), dble(1), dble(0))
-end function Betrag
+end function Fgsat
 
 
-
-type(vector) function Fg(vecr) !Wir definieren hier die Gravitationskraft als Summe der Gravikraefte von Saturn und Rhea
+type(vector) function Fgrhe(vecr) 
   use Saturndata
   use vectors
   implicit none
-  Type (ec), intent(in) :: vecr!Hier weiter machen!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  Fg = -gamma * MSaturn * MTeilchen * r/r**3 !-gamma * MRhea * MTeilchen
+  Type (vector), intent(in) :: vecr
+  Fgrhe = svmul(-gamma * MRhea * MTeilchen *(1.d0/vabs(vecr)**3.d0), vecr) 
+  return
+end function Fgrhe
+
+
+type(vector) function Fg(Fgsat, Fgrhe) !Fg = Summe der Gravikraefte von Saturn und Rhea
+  use Saturndata
+  use vectors
+  implicit none
+  Type (vector), intent(in) :: Fgsat, Fgrhe
+  Fg = vadd(Fgsat, Fgrhe)
   return
 end function Fg
 
 
-!-------------------------------------------------
-type(vector) function Fc(m, w, v)
+
+type(vector) function trafo(vec, RheaSaturnVec) !Trafo-Matrix (Spaeter)
   use Saturndata
   use vectors
   implicit none
-  double precision , intent(in) :: m
-  type(vector) :: w, v
-
-  write(*,*) w .kreuz. v
-
-  Fc = vsmul((w .kreuz. v), (2 * m))
+  Type (vector), intent(in) :: vec, RheaSaturnVec  
+  trafo = vsub(vec, RheaSaturnVec)!Momentan ist trafo noch auf vec gesetzt so, dass die Umrechnung spaeter erfolgt 
   return
-end function Fc
+end function trafo
 
 
-type(vector) function Fz(m, w, r)
-  use Saturndata
-  use vectors
-  implicit none
-  double precision , intent(in) :: m
-  type(vector) :: w, r
 
-  Fz = vsmul((w .kreuz. (w .kreuz. r)), m)
 
-  return
-end function Fz
+
+
+
+!type(vector) function Fc(m, w, v)
+!  implicit none
+!  use Saturndata
+!  use vectors
+!  double precision , intent(in) :: m
+!  type(vector), intent(in) :: w, v
+!  Fc = vsmul(cross(w, v), (2.d0 * m))
+!  return
+!end function Fc
+
+
+!type(vector) function Fz(m, w, r)
+!  implicit none
+!  use Saturndata
+!  use vectors
+!  double precision , intent(in) :: m
+!  type(vector), intent(in) :: w, r
+!  Fz = vsmul(cross(w,cross(w, r)), m)
+!  return
+!end function Fz
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
