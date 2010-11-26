@@ -165,7 +165,7 @@ program TeilchenbahnNeu
   TYPE (vector) :: veca              !Beschleunigung, die auf das Teilchen wirkt
   TYPE (vector) :: AbstRheaSaturnVec !Abstandsvektor zwischen Saturn und Rhea
   TYPE (vector) :: omega             ![1/s] Winkelgeschw. Vektor
-
+  TYPE (vector), dimension(10) :: Test
 
   !Parameter**************************************
   double precision :: Abstand        !Abstand Saturn-Rhea
@@ -346,7 +346,7 @@ end function Fz
 
 
 
-
+   
 
 
 
