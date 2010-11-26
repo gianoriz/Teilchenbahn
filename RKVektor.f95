@@ -234,12 +234,12 @@ program TeilchenbahnNeu
   do i = 1, n
      K1r = svmul(dt*i, vecv)                   
      write(*,*) K1r
-     !end do
-
-     ! do i = 1, n
-     K2r = svmul(dt*i, vadd(vecv, vsmul(K1r,0.d5))) !Ergebnisse werden nicht in der zweiten Schleife Uebernommen wieso???
-     write(*,*) K2r
   end do
+
+  ! do i = 1, n
+  !  K2r = svmul(dt*i, vadd(vecv, vsmul(K1r,0.d5))) !Ergebnisse werden nicht in der zweiten Schleife Uebernommen wieso???
+  !  write(*,*) K2r
+  !end do
 
   !  do i = 1, n
   !     K3r = svmul(dt*i, vecv)

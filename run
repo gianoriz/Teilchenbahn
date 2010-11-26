@@ -7,7 +7,7 @@ echo "LADE AUF GITHUB HOCH"
 
 
 git commit -a  -m "ich habe wieder etwas weitergearbeitet"
-git push
+#git push
 
 echo "============================================================="
 echo "KOMPILIEREN UND STARTEN"
