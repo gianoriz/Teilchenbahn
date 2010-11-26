@@ -222,8 +222,8 @@ program TeilchenbahnNeu
 
 Test(1) = newvec(1.d0, 2.d0, 3.d0, "m    ")  
 Test(2) = newvec(2.d0, 7.d0, 5.d0, "m    ")  
-write(*,*) Test
-
+write(*,*) Test(1)
+write(*,*) Test(2)
   !RUNGE-KUTTA-SOLVER:
 
   !K1r = dt * v fuer die Ortskoordinaten
