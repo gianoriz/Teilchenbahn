@@ -165,7 +165,15 @@ program TeilchenbahnNeu
   TYPE (vector) :: veca              !Beschleunigung, die auf das Teilchen wirkt
   TYPE (vector) :: AbstRheaSaturnVec !Abstandsvektor zwischen Saturn und Rhea
   TYPE (vector) :: omega             ![1/s] Winkelgeschw. Vektor
-  TYPE (vector), dimension(2) :: Test
+
+
+
+  !#############################################
+  integer, parameter :: MaximaleIteration  = 10                !Bei jeder Itaeration wird ein neuer Vektor berechnet 
+  TYPE (vector), dimension(MaximaleIteration) :: Position !Neue Positionswerte
+  TYPE (vector), dimension(MaximaleIteration) :: Velocity !Neue Geschwindigkeitswerte
+  !#############################################
+
 
   !Parameter**************************************
   double precision :: Abstand        !Abstand Saturn-Rhea
@@ -220,11 +228,11 @@ program TeilchenbahnNeu
   write(*,*) "veca    =", veca
 
 
-Test(1) = newvec(1.d0, 2.d0, 3.d0, "m    ")  
-Test(2) = newvec(2.d0, 7.d0, 5.d0, "m    ")  
-write(*,*) Test(1)
-write(*,*) Test(2)
+
+
   !RUNGE-KUTTA-SOLVER:
+
+
 
   !K1r = dt * v fuer die Ortskoordinaten
 
@@ -237,30 +245,18 @@ write(*,*) Test(2)
   !   write(*,*) K1r
   !end do
 
-  ! do i = 1, n
-  !  K2r = svmul(dt*i, vadd(vecv, vsmul(K1r,0.d5))) !Ergebnisse werden nicht in der zweiten Schleife Uebernommen wieso???
-  !  write(*,*) K2r
-  !end do
-
-  !  do i = 1, n
-  !     K3r = svmul(dt*i, vecv)
-  !     write(*,*) K3r
-  !  end do
-
-  !  do i = 1, n
-  !     K4r = svmul(dt*i, vecv)
-  !     write(*,*) K4r
-  !  end do
 
 
-  !K1v = dt * v fuer die Geschw-Koordinaten
-  !.
-  !.
-  !.
-  !kommt noch.....
-  !.
-  !.
-  !.
+
+
+
+
+
+
+
+
+
+
 
 
 end program TeilchenbahnNeu
