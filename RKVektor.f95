@@ -165,7 +165,7 @@ program TeilchenbahnNeu
   TYPE (vector) :: veca              !Beschleunigung, die auf das Teilchen wirkt
   TYPE (vector) :: AbstRheaSaturnVec !Abstandsvektor zwischen Saturn und Rhea
   TYPE (vector) :: omega             ![1/s] Winkelgeschw. Vektor
-  TYPE (vector), dimension(10) :: Test
+  TYPE (vector), dimension(2) :: Test
 
   !Parameter**************************************
   double precision :: Abstand        !Abstand Saturn-Rhea
@@ -220,8 +220,9 @@ program TeilchenbahnNeu
   write(*,*) "veca    =", veca
 
 
-
-
+Test(1) = newvec(1.d0, 2.d0, 3.d0, "m    ")  
+Test(2) = newvec(2.d0, 7.d0, 5.d0, "m    ")  
+write(*,*) Test
 
   !RUNGE-KUTTA-SOLVER:
 
