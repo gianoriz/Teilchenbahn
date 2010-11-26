@@ -229,13 +229,13 @@ write(*,*) Test
   !K1r = dt * v fuer die Ortskoordinaten
 
 
-  n = 5
-  dt = 1.0
+  !n = 5
+  !dt = 1.0
 
-  do i = 1, n
-     K1r = svmul(dt*i, vecv)                   
-     write(*,*) K1r
-  end do
+  !do i = 1, n
+  !   K1r = svmul(dt*i, vecv)                   
+  !   write(*,*) K1r
+  !end do
 
   ! do i = 1, n
   !  K2r = svmul(dt*i, vadd(vecv, vsmul(K1r,0.d5))) !Ergebnisse werden nicht in der zweiten Schleife Uebernommen wieso???
